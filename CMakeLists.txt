@@ -15,6 +15,7 @@ set(
     Helpers
     library/helpers/formatters.c
     library/helpers/printers.h
+    library/helpers/arithmatic.c
 )
 
 include_directories(
@@ -25,3 +26,5 @@ link_directories(
 )
 
 add_executable(challenge1 library/set1/challenge1.c ${Helpers})
+
+add_executable(challenge2 library/set1/challenge2.c ${Helpers})

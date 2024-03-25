@@ -6,6 +6,11 @@
 
 /* Converts a b64 byte to its printable ascii equivalent. */
 char b64_to_ascii(uint8_t c) {
+    if (c > 63) {
+        printf("\nERROR: %d is not base64.\n", c);
+        return '#';
+    }
+
     if (c < 26) {
         /* Upper case char. */
         return c + 'A';
@@ -61,7 +66,7 @@ void bytes_to_b64(char* hexIn, char* out, size_t len) {
     }
 
     if ((len % 3) != 0) {
-        printf("ERROR: Part of input ignored.");
+        printf("\nERROR: Part of input ignored.\n");
     }
 }
 
@@ -72,6 +77,6 @@ void hex_to_bytes(char* in, char* out, size_t len) {
         sscanf(&in[2 * i], "%2hhx", &out[i]);
     }
     if ((len % 2) == 1) {
-        sscanf(&in[len - 1], "%1hx", &out[len/2]);
+        sscanf(&in[len - 1], "%x", (unsigned int*) &out[len/2]);
     }
 }

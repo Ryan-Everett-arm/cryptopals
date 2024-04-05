@@ -28,3 +28,4 @@ link_directories(
 add_executable(challenge1 library/set1/challenge1.c ${Helpers})
 add_executable(challenge2 library/set1/challenge2.c ${Helpers})
 add_executable(challenge3 library/set1/challenge3.c ${Helpers})
+add_executable(challenge4 library/set1/challenge4.c ${Helpers})

@@ -19,15 +19,16 @@ int main() {
     size_t inputLen = strlen(in);
     size_t byteLen = inputLen/2 + (inputLen % 2);
     char* bytes = malloc((byteLen) * sizeof(char));
-    char* out = malloc(inputLen * sizeof(char));
+    char* out = malloc(byteLen * sizeof(char));
+    size_t* score = 0;
     /* Get the byte array. */
     hex_to_bytes(in, bytes, inputLen);
 
     /* Brute force the cipher. */
-    brute_force_xor_cipher(bytes, out, inputLen/2);
+    brute_force_xor_cipher(bytes, out, &score, byteLen);
 
     /* Print the result. */
-    print_ascii_array(out, inputLen/2);
+    print_ascii_array(out, byteLen);
     printf("\n");
 
     free(out); free(bytes);

@@ -14,4 +14,4 @@ void bytes_to_b64(char* hexIn, char* out, size_t len);
 void hex_to_bytes(char* in, char* out, size_t len);
 
 /* Return the key used to encrypt an ASCII encoded English mainly-lowercase plaintext. */
-uint8_t brute_force_xor_cipher(uint8_t* ciphertext, uint8_t* plaintext, size_t len);
+uint8_t brute_force_xor_cipher(uint8_t* ciphertext, uint8_t* plaintext, size_t * score, size_t len);

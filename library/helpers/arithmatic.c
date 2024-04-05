@@ -40,27 +40,29 @@ static int english_freq_score[] =
       7, 7, 3, 0, 8, 6, 7, 4, 1, 1, 0, 2, 0
     };
 
-/* Pass in base64 bytes, decrypt and put output into out, key into key. */
-uint8_t brute_force_xor_cipher(uint8_t* bytes, uint8_t* out, size_t len) {
-    uint8_t key = 0; size_t score = 0;
+/* Pass in base64 bytes, decrypt and put output into out, score into score.
+   Return the key. */
+uint8_t brute_force_xor_cipher(uint8_t* bytes, uint8_t* out, size_t* score, size_t len) {
+    uint8_t key = 0;
     uint8_t bestKey = 0; size_t bestScore = 0;
     uint8_t secondBestScore = 0;
     /* Invarariant: i == key. */
     for (int i = 0; i < 256; i ++) {
         xor_bytes_with_key(bytes, key, out, len);
-        score = score_english_text(out, english_freq_score, len);
-        if (score > secondBestScore) {
-            if (score > bestScore) {
+        *score = score_english_text(out, english_freq_score, len);
+        if (*score > secondBestScore) {
+            if (*score > bestScore) {
                 secondBestScore = bestScore;
-                bestScore = score;
+                bestScore = *score;
                 bestKey = key;
             }
             else {
-                secondBestScore = score;
+                secondBestScore = *score;
             }
         }
         key ++;
     }
+    *score = bestScore;
     xor_bytes_with_key(bytes, bestKey, out, len);
     return bestKey;
 }

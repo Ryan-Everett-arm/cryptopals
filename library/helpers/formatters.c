@@ -141,14 +141,15 @@ size_t b64_to_bytes(uint8_t *b64In, size_t b64Len, uint8_t *out) {
 
 /* Pass in a string of textual hex.
  * Puts the binary of this hex into out. */
-void hex_to_bytes(char* in, char* out, size_t len) {
-    for (size_t i = 0; i < (len/2); i ++) {
+void hex_to_bytes(char *in, char *out, size_t len) {
+    for (size_t i = 0; i < (len / 2); i++) {
         sscanf(&in[2 * i], "%2hhx", &out[i]);
     }
     if ((len % 2) == 1) {
-        sscanf(&in[len - 1], "%x", (unsigned int*) &out[len/2]);
+        sscanf(&in[len - 1], "%x", (unsigned int*)&out[len / 2]);
     }
 }
+
 /* Take as input a file pointer to an open file,
  * return the contents of the file as a byte
  * array with all newlines filtered out.

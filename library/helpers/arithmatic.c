@@ -14,11 +14,27 @@ void xor_bytes_with_key(uint8_t* bytes, uint8_t key, uint8_t* out, size_t len) {
     }
 }
 
+/* Return the number of differing bits between two bytes. */
+int byte_distance(uint8_t b1, uint8_t b2) {
+    int d = 0;
+    uint8_t diff = b1 ^ b2;
+
+    /* The byte distance is the number of set bits in diff; calculate this. */
+    for (int i = 0; i < 8; i++) {
+        if (diff % 2) {
+            d ++;
         }
+        diff = diff >> 1;
     }
+    return d;
 }
 
 size_t hamming_distance(uint8_t* in1, uint8_t* in2, size_t len) {
     size_t d = 0;
 
+    /* For each byte, add the number of differing bits. */
+    for (int i = 0; i < len; i ++) {
+        d += byte_distance(in1[i], in2[i]);
     }
+    return d;
+}

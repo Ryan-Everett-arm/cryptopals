@@ -10,7 +10,6 @@ project(
     DESCRIPTION "Ryan Everett's Cryptopals answers."
     LANGUAGES C)
 
-
 set(
     Helpers
     library/helpers/formatters.c
@@ -31,3 +30,4 @@ add_executable(challenge2 library/set1/challenge2.c ${Helpers})
 add_executable(challenge3 library/set1/challenge3.c ${Helpers})
 add_executable(challenge4 library/set1/challenge4.c ${Helpers})
 add_executable(challenge5 library/set1/challenge5.c ${Helpers})
+add_executable(challenge6 library/set1/challenge6.c ${Helpers})

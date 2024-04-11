@@ -72,4 +72,50 @@ uint8_t brute_force_xor_cipher(uint8_t* bytes, uint8_t* out, size_t* score, size
     xor_bytes_with_key(bytes, bestKey, out, len);
     return bestKey;
 }
+
+/* When ciphertext has been encrypted by a repeating key xor,
+ * try to find the key length of the key.
+ * The ciphertext must be longer than numTries * maxKeyLen. */
+int find_repeating_xor_key_size(uint8_t* ciphertext, size_t len, int numTries, int maxKeyLen) {
+    int bestKeySize = 0;
+    size_t bestNormDist = SIZE_MAX;
+    for (int keySize = 2; keySize < maxKeyLen; keySize ++) {
+        /* Find the sum of the normalized hamming distances. */
+        size_t totalDist = 0;
+        for (int i = 0; i < numTries; i ++) {
+            for (int j = 0; j < i; j ++) {
+                totalDist += hamming_distance(&ciphertext[i * keySize],
+                                               &ciphertext[j * keySize],
+                                               keySize);
+            }
+        }
+        if ((totalDist / keySize) < bestNormDist) {
+            bestNormDist = totalDist / keySize;
+            bestKeySize = keySize;
+        }
+    }
+    return bestKeySize;
+}
+
+/* When ciphertext has been encrypted by a repeating key xor,
+ * find the key and store it in out.
+ * The ciphertext must be longer than numTries * maxKeyLen.
+ * Future improvement: pass in scoring function. */
+int find_repeating_xor_key(uint8_t* ciphertext, uint8_t* out, size_t len, size_t numTries, int maxKeyLen) {
+    int keySize = find_repeating_xor_key_size(ciphertext, len, numTries, maxKeyLen);
+
+    /*Now that we have the key size. Get each key byte. */
+    /* We will have len/keySize (+1) blocks. */
+    uint8_t buffer[(len / keySize) + 1];
+    uint8_t temp[(len / keySize) + 1];
+    size_t score[1];
+    for (int i = 0; i < keySize; i ++) {
+        /* Fill buffer with all bytes encrypted by byte i of the key. */
+        for (int n = 0; n < (len / keySize); n ++) {
+            buffer[n] = ciphertext[(n * keySize) + i];
+        }
+        /* Get the i'th byte of the key. */
+        out[i] = brute_force_xor_cipher(buffer, temp, score, len/ keySize);
+    }
+    return keySize;
 }

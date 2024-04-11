@@ -149,3 +149,26 @@ void hex_to_bytes(char* in, char* out, size_t len) {
         sscanf(&in[len - 1], "%x", (unsigned int*) &out[len/2]);
     }
 }
+/* Take as input a file pointer to an open file,
+ * return the contents of the file as a byte
+ * array with all newlines filtered out.
+ * Store the length of the new byte array. */
+char* convert_file_to_bytes_without_newlines(FILE * filePointer, int maxLineLen, size_t* outLength) {
+    /* Get file length for an upper bound on return size.*/
+    fseek(filePointer, 0, SEEK_END);
+    size_t fileLen = ftell(filePointer);
+    rewind(filePointer);
+
+    char* out = malloc(fileLen * sizeof(char));
+
+    size_t currLength = 0;
+    char buffer[maxLineLen];
+    while(fgets(buffer, maxLineLen + 1, filePointer)) {
+        /* buffer now holds the line including the new line.
+         * Cut the new line and copy this to out. */
+        memcpy(&out[currLength], buffer, strlen(buffer) - 1);
+        currLength += strlen(buffer) - 1;
+    }
+    *outLength = currLength;
+    return out;
+}

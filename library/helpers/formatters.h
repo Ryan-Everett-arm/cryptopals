@@ -27,3 +27,8 @@ size_t b64_to_bytes(uint8_t *b64In, size_t b64Len, uint8_t *out);
  * Puts the binary of this hex into out. */
 void hex_to_bytes(char* in, char* out, size_t len);
 
+/* Take as input a file pointer to an open file,
+ * return the contents of the file as a byte
+ * array with all newlines filtered out.
+ * Store the length of the new byte array. */
+char* convert_file_to_bytes_without_newlines(FILE * filePointer, int maxLineLen, size_t* outLength);

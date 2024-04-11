@@ -33,13 +33,11 @@ int main() {
     size_t* bytesLenPointer = malloc(sizeof(size_t));
     char* bytes = convert_file_to_bytes_without_newlines(filePointer, 70, bytesLenPointer);
     size_t bytesLen = *bytesLenPointer;
-    //print_ascii_array(bytes, bytesLen);
     fclose(filePointer);
 
     /* Convert the bytes to binary base 64, removing padding. */
     for (int i = 0; i < bytesLen; i ++) {
-        if (bytes[i] == 0 ){//| bytes[i] == '=') {
-            bytesLen == i;
+        if (bytes[i] == 0) {
             bytesLen = i; /* Terminate the loop. Update the new size of bytes. */
         } else {
             bytes[i] = ascii_to_b64(bytes[i]);
@@ -50,16 +48,17 @@ int main() {
     /* These don't check if malloc is successful. */
     char* decodedB64 = malloc(3 * (bytesLen * sizeof(char) / 4));
     size_t decodedB64Len = b64_to_bytes(bytes, bytesLen, decodedB64);
-    //print_hex_array(decodedB64,decodedB64Len);
 
-    uint8_t * key = malloc(40);
+    /* Find the key and decode the plaintext. */
+    uint8_t key [40];
     uint8_t keyLen = find_repeating_xor_key(decodedB64, key, decodedB64Len, 4, 40);
     uint8_t* plaintext = malloc(decodedB64Len);
     repeating_key_xor(decodedB64, decodedB64Len, key, keyLen, plaintext);
+
     printf("\nKey: ");
     print_ascii_array(key, keyLen);
-    printf("\n\n Plaintext: ");
+    printf("\n\nPlaintext: ");
     print_ascii_array(plaintext, decodedB64Len);
 
-    free(bytes); free(bytesLenPointer); free(decodedB64); free(key);
+    free(bytes); free(bytesLenPointer); free(decodedB64);
 }

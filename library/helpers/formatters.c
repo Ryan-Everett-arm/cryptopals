@@ -95,8 +95,8 @@ void convert_4_b64_to_bytes(char *b64In, char *out) {
     out[0] = (b64In[0] << 2) | (b64In[1] >> 4);
     /* B1  =     ijkl0000    |    0000mnop */
     out[1] = (b64In[1] << 4) | (b64In[2] >> 2);
-    /* B2  =     qr000000    |  00stuvwx */
-    out[2] = (b64In[2] << 6) | (b64In[3]);
+    /* B2  =     qr000000    |    00stuvwx */
+    out[2] = (b64In[2] << 6) | (  b64In[3]   );
 }
 
 /* Pass in a byte string.

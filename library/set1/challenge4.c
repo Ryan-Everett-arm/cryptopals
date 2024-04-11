@@ -5,13 +5,14 @@
 #include <formatters.h>
 #include <arithmatic.h>
 #include <printers.h>
+#include <crypto.h>
 
 int main() {
     FILE * filePointer;
     int bufferLength = 80;
     char buffer[bufferLength];
     size_t byteLen = 30;
-    filePointer = fopen("/data_nvme1n1/ryaeve01//cryptopals/library/set1/challenge-data/3.4.txt", "r");
+    filePointer = fopen("/data_nvme1n1/ryaeve01/cryptopals/library/set1/challenge-data/4.txt", "r");
     
     if (filePointer == NULL) {
         printf("\nERROR: File does not exist.\n");
@@ -49,5 +50,5 @@ int main() {
     printf("\".\nThis is string %lu, with a score of %lu.\n", maxIndex, maxScore);
     printf("The second highest scoring string scored %lu.\n", secondMaxScore);
     fclose(filePointer);
-    free(bytes); free(out); free(score);
+    free(bytes); free(out); free(maxPlaintext); free(score);
 }

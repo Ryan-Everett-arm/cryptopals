@@ -52,8 +52,7 @@ uint8_t brute_force_xor_cipher(uint8_t* bytes, uint8_t* out, size_t* score, size
     uint8_t key = 0;
     uint8_t bestKey = 0; size_t bestScore = 0;
     uint8_t secondBestScore = 0;
-    /* Invarariant: i == key. */
-    for (int i = 0; i < 256; i ++) {
+    for (int key = 0; key < 256; key ++) {
         xor_bytes_with_key(bytes, key, out, len);
         *score = score_english_text(out, english_freq_score, len);
         if (*score > secondBestScore) {
@@ -66,7 +65,6 @@ uint8_t brute_force_xor_cipher(uint8_t* bytes, uint8_t* out, size_t* score, size
                 secondBestScore = *score;
             }
         }
-        key ++;
     }
     *score = bestScore;
     xor_bytes_with_key(bytes, bestKey, out, len);

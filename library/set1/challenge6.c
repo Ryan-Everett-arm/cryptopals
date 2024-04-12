@@ -25,7 +25,7 @@ int main() {
 
     /* Load the file into a byte array. */
     FILE * filePointer;
-    filePointer = fopen("/data_nvme1n1/ryaeve01/cryptopals/library/set1/challenge-data/6.txt", "r");
+    filePointer = fopen("../library/set1/challenge-data/6.txt", "r");
     if (filePointer == NULL) {
         printf("\nERROR: File does not exist.\n");
         return 1;

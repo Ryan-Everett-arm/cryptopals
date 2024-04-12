@@ -12,7 +12,7 @@ int main() {
     int bufferLength = 80;
     char buffer[bufferLength];
     size_t byteLen = 30;
-    filePointer = fopen("/data_nvme1n1/ryaeve01/cryptopals/library/set1/challenge-data/4.txt", "r");
+    filePointer = fopen("../library/set1/challenge-data/4.txt", "r");
     
     if (filePointer == NULL) {
         printf("\nERROR: File does not exist.\n");

@@ -5,6 +5,7 @@
 #include <formatters.h>
 #include <arithmatic.h>
 #include <printers.h>
+#include <crypto.h>
 
 /* First convert the input to a byte array.
  * Then brute-force by decoding with every possible key (there are only 256),
@@ -25,7 +26,7 @@ int main() {
     hex_to_bytes(in, bytes, inputLen);
 
     /* Brute force the cipher. */
-    brute_force_xor_cipher(bytes, out, &score, byteLen);
+    brute_force_xor_cipher(bytes, out, score, byteLen);
 
     /* Print the result. */
     print_ascii_array(out, byteLen);

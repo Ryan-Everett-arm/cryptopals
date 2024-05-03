@@ -102,7 +102,7 @@ int find_repeating_xor_key_size(uint8_t* ciphertext, size_t len, int numTries, i
 int find_repeating_xor_key(uint8_t* ciphertext, uint8_t* out, size_t len, size_t numTries, int maxKeyLen) {
     int keySize = find_repeating_xor_key_size(ciphertext, len, numTries, maxKeyLen);
 
-    /*Now that we have the key size. Get each key byte. */
+    /* Now that we have the key size. Get each key byte. */
     /* We will have len/keySize (+1) blocks. */
     uint8_t buffer[(len / keySize) + 1];
     uint8_t temp[(len / keySize) + 1];
@@ -113,7 +113,7 @@ int find_repeating_xor_key(uint8_t* ciphertext, uint8_t* out, size_t len, size_t
             buffer[n] = ciphertext[(n * keySize) + i];
         }
         /* Get the i'th byte of the key. */
-        out[i] = brute_force_xor_cipher(buffer, temp, score, len/ keySize);
+        out[i] = brute_force_xor_cipher(buffer, temp, score, len / keySize);
     }
     return keySize;
 }

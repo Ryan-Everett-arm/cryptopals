@@ -24,6 +24,12 @@ include_directories(
 link_directories(
     ${CMAKE_SOURCE_DIR}/library/helpers
 )
+set(
+    MbedTLS_DIR
+    $ENV{MBEDTLS_CMAKE}
+)
+
+find_package(MbedTLS REQUIRED)
 
 add_executable(challenge1 library/set1/challenge1.c ${Helpers})
 add_executable(challenge2 library/set1/challenge2.c ${Helpers})
@@ -31,3 +37,5 @@ add_executable(challenge3 library/set1/challenge3.c ${Helpers})
 add_executable(challenge4 library/set1/challenge4.c ${Helpers})
 add_executable(challenge5 library/set1/challenge5.c ${Helpers})
 add_executable(challenge6 library/set1/challenge6.c ${Helpers})
+add_executable(challenge7 library/set1/challenge7.c ${Helpers})
+target_link_libraries(challenge7 MbedTLS::mbedtls)

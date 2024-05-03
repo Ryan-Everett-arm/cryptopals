@@ -10,7 +10,7 @@ void repeating_key_xor(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t key
     }
 
     /* Encrypt all bytes except the final (bytesLen%keyLen). */
-    for (size_t i = 0; i < bytesLen; i += keyLen) {
+    for (size_t i = 0; i + keyLen < bytesLen; i += keyLen) {
         xor_bytes(bytes + i, key, out + i, keyLen);
     }
 

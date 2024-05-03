@@ -173,3 +173,27 @@ char* convert_file_to_bytes_without_newlines(FILE * filePointer, int maxLineLen,
     *outLength = currLength;
     return out;
 }
+
+/* Take as input a file pointer to an open file of encoded base64.
+ * Decode the file and store the decoded bytes into the returned array. */
+char* decode_b64_file_into_bytes(FILE * filePointer, int maxLineLen, size_t* outLen) {
+    size_t b64Len;
+
+    char* bytesB64 = convert_file_to_bytes_without_newlines(filePointer, maxLineLen, &b64Len);
+
+    /* Convert the base64 ascii to binary base 64, removing padding. */
+    for (int i = 0; i < b64Len; i ++) {
+        if (bytesB64[i] == 0) {
+            b64Len = i; /* Terminate the loop. Update the new size of bytes. */
+        } else {
+            bytesB64[i] = ascii_to_b64(bytesB64[i]);
+        }
+    }
+
+    /*Decode the base64: */
+    char* bytes = malloc((3 * (b64Len * sizeof(char))) / 4);
+    *outLen = b64_to_bytes(bytesB64, b64Len, bytes);
+    free(bytesB64);
+
+    return bytes;
+}

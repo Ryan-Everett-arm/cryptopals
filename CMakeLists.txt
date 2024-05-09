@@ -46,6 +46,7 @@ add_executable(challenge5 library/set1/challenge5.c ${Helpers})
 add_executable(challenge6 library/set1/challenge6.c ${Helpers})
 add_executable(challenge7 library/set1/challenge7.c ${Helpers})
 add_executable(challenge7SSL library/set1/challenge7SSL.c ${Helpers})
+add_executable(challenge8 library/set1/challenge8.c ${Helpers})
 
 target_link_libraries(challenge7 MbedTLS::mbedtls)
 target_link_libraries(challenge7SSL OpenSSL::SSL)

@@ -29,6 +29,16 @@ int byte_distance(uint8_t b1, uint8_t b2) {
     return d;
 }
 
+/* Return 1 if the contents of a and b are the same, 0 otherwise. */
+int string_equal(char* a, char* b, size_t len) {
+    for (size_t i = 0; i < len; i ++) {
+        if (a[i] != b[i]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 size_t hamming_distance(uint8_t* in1, uint8_t* in2, size_t len) {
     size_t d = 0;
 

@@ -17,7 +17,7 @@
  * and assuming that all other ciphertexts are indistinguishable from uniformly generated
  * random strings, what is the probability that this code returns the wrong ciphertext?
  *
- * This code returns a ciphetext as ECB encrypted if the text contains ANY
+ * This code returns a ciphertext as ECB encrypted if the text contains ANY
  * duplicate blocks. The required probability is bounded by the probability
  * that at least one of the 203 "non-target" ciphertexts contains a duplicate
  * block, so let's calculate that.
@@ -31,19 +31,19 @@
  * This is an instance of the Birthday Paradox, let's prove it with a counting argument:
  *
  * Each block represents a 128 bit number, so there are 2^128 possible values for any block.
- * For the sake of readablility, let k = 2^128.
+ * For the sake of readability, let k = 2^128.
  * The number of 10 block strings which do not contain any repeating blocks, N, is given by:
  * N = k *      //Number of possible values for the first block
  *     k - 1 *  //The second block can take any value except for the value of the first block
  *     k - 2 *  //The third block can take any value except for the value of the first two blocks.
  *     ...   *
  *     k - 9    //The final block can take any value except for the value of the previous blocks.
- *   = k! / (k - 10)! //Simplifly the result.
+ *   = k! / (k - 10)! //Simplify the result.
  *
  * The total number of unique 10 block strings, M, is given by:
  * M = k^10 //Each block can take any value between 0 and 2^128 - 1.
  *
- * The strings are uniformally generated, C takes any value with equal chance, so:
+ * The strings are uniformly generated, C takes any value with equal chance, so:
  * P(C does not have any duplicate blocks) = N / M = k! / (k^10 * (k - 10)!).
  *
  * This number is not pleasant to work out by hand, so we will instead use
@@ -57,7 +57,7 @@
  * We have 203 non-target strings, the probability that at least one of these
  * has a duplicate block is a binomial, given by:
  *   = 1 - P(All 203 strings have no duplicate blocks)
- *   < 203 * 10^-36 //As the strings are independant and identically distributed.
+ *   < 203 * 10^-36 //As the strings are independent and identically distributed.
  *   < 2.03 * 10^-34
  *   < 10^-33.
  *

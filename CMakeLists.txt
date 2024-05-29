@@ -16,6 +16,7 @@ set(
     library/helpers/printers.h
     library/helpers/arithmatic.c
     library/helpers/crypto.c
+    library/helpers/challengeList.h
 )
 
 include_directories(
@@ -38,6 +39,10 @@ find_package(OpenSSL REQUIRED)
 
 find_package(MbedTLS REQUIRED)
 
+#May eventually replace with a single executable which takes challenge number
+#as param.
+
+#Set 1:
 add_executable(challenge1 library/set1/challenge1.c ${Helpers})
 add_executable(challenge2 library/set1/challenge2.c ${Helpers})
 add_executable(challenge3 library/set1/challenge3.c ${Helpers})
@@ -47,6 +52,8 @@ add_executable(challenge6 library/set1/challenge6.c ${Helpers})
 add_executable(challenge7 library/set1/challenge7.c ${Helpers})
 add_executable(challenge7SSL library/set1/challenge7SSL.c ${Helpers})
 add_executable(challenge8 library/set1/challenge8.c ${Helpers})
-
 target_link_libraries(challenge7 MbedTLS::mbedtls)
 target_link_libraries(challenge7SSL OpenSSL::SSL)
+
+#Set 2:
+add_executable(challenge9 library/set2/challenge9.c ${Helpers})

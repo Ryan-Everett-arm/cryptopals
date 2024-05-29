@@ -36,3 +36,7 @@ char* convert_file_to_bytes_without_newlines(FILE * filePointer, int maxLineLen,
 /* Take as input a file pointer to an open file of encoded base64.
  * Decode the file and store the decoded bytes into the returned array. */
 char* decode_b64_file_into_bytes(FILE * filePointer, int maxLineLen, size_t* outLen);
+
+/* Pad a string 'in' to a 'blockLen' size using the PKCS#7 format.
+ * Put the result into 'out'. 'out' and 'in' can be the same. */
+void pad_pkcs7(char* in, char* out, size_t inLen, size_t blockLen);

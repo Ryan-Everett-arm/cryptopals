@@ -19,12 +19,6 @@ set(
     library/helpers/challengeList.h
 )
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/library/helpers
-)
-link_directories(
-    ${CMAKE_SOURCE_DIR}/library/helpers
-)
 set(
     MbedTLS_DIR
     $ENV{MBEDTLS_CMAKE}
@@ -39,6 +33,14 @@ find_package(OpenSSL REQUIRED)
 
 find_package(MbedTLS REQUIRED)
 
+include_directories(
+    ${CMAKE_SOURCE_DIR}/library/helpers
+     MbedTLS::mbedtls/include
+)
+link_directories(
+    ${CMAKE_SOURCE_DIR}/library/helpers
+)
+
 #May eventually replace with a single executable which takes challenge number
 #as param.
 
@@ -52,8 +54,20 @@ add_executable(challenge6 library/set1/challenge6.c ${Helpers})
 add_executable(challenge7 library/set1/challenge7.c ${Helpers})
 add_executable(challenge7SSL library/set1/challenge7SSL.c ${Helpers})
 add_executable(challenge8 library/set1/challenge8.c ${Helpers})
-target_link_libraries(challenge7 MbedTLS::mbedtls)
-target_link_libraries(challenge7SSL OpenSSL::SSL)
 
 #Set 2:
 add_executable(challenge9 library/set2/challenge9.c ${Helpers})
+add_executable(challenge10 library/set2/challenge10.c ${Helpers})
+
+#Link external libraries
+target_link_libraries(challenge1 MbedTLS::mbedtls)
+target_link_libraries(challenge2 MbedTLS::mbedtls)
+target_link_libraries(challenge3 MbedTLS::mbedtls)
+target_link_libraries(challenge4 MbedTLS::mbedtls)
+target_link_libraries(challenge5 MbedTLS::mbedtls)
+target_link_libraries(challenge6 MbedTLS::mbedtls)
+target_link_libraries(challenge7 MbedTLS::mbedtls)
+# target_link_libraries(challenge7SSL OpenSSL::SSL)
+target_link_libraries(challenge8 MbedTLS::mbedtls)
+target_link_libraries(challenge9 MbedTLS::mbedtls)
+target_link_libraries(challenge10 MbedTLS::mbedtls)

@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <arithmatic.h>
+#include <psa/crypto.h>
+#include <string.h>
 
 void repeating_key_xor(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* out) {
     /* Special case for when the key is not shorter than the plaintext. */
@@ -116,4 +118,97 @@ int find_repeating_xor_key(uint8_t* ciphertext, uint8_t* out, size_t len, size_t
         out[i] = brute_force_xor_cipher(buffer, temp, score, len / keySize);
     }
     return keySize;
+}
+/* In future this could be generalised to just encrypt_cbc, with mode as param. */
+void encrypt_cbc_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* iv, uint8_t* out) {
+    int numBlocks = bytesLen / 16;
+    uint8_t prevResult [16];
+    size_t unused;
+
+    if (bytesLen % 16 != 0) {
+        printf("\nERROR: Invalid bytesLen");
+        return;
+    }
+
+    /* Initialize PSA Crypto */
+    psa_status_t status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        printf("Failed to initialize PSA Crypto\n");
+        return;
+    }
+
+    /* Load the key into the psa key store. */
+    psa_key_id_t psa_key_id = PSA_KEY_ID_NULL;
+    psa_key_attributes_t keyAttr = PSA_KEY_ATTRIBUTES_INIT;
+    psa_set_key_usage_flags(&keyAttr, PSA_KEY_USAGE_ENCRYPT);
+    psa_set_key_type(&keyAttr, PSA_KEY_TYPE_AES);
+    psa_set_key_bits(&keyAttr, 128);
+    psa_set_key_algorithm(&keyAttr, PSA_ALG_ECB_NO_PADDING);
+    status = psa_import_key(&keyAttr, key, 16, &psa_key_id);
+    if (status != PSA_SUCCESS) {
+        printf("\nERROR: Failed to import key.\n");
+        return;
+    }
+
+    /* Perform the cbc. */
+    memcpy(prevResult, iv, 16);
+    for (int i = 0; i < numBlocks; i ++) {
+        xor_bytes(prevResult, bytes + (16*i), prevResult, 16);
+        psa_cipher_encrypt(psa_key_id, PSA_ALG_ECB_NO_PADDING, prevResult, 16, out + (16*i), 16, &unused);
+        if (status != PSA_SUCCESS) {
+            printf("\nERROR: Failed to decrypt, error code: %d.\n", status);
+            psa_destroy_key(psa_key_id);
+            return;
+        }
+        memcpy(prevResult, out + (16* i), 16);
+    }
+    psa_destroy_key(psa_key_id);
+}
+
+/* In future this could be generalised to just decrypt_cbc, with mode as param. */
+void decrypt_cbc_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* iv, uint8_t* out) {
+
+    int numBlocks = bytesLen / 16;
+    uint8_t prevResult [16];
+    size_t unused;
+
+    if (bytesLen % 16 != 0) {
+        printf("\nERROR: Invalid bytesLen");
+        return;
+    }
+
+    /* Initialize PSA Crypto */
+    psa_status_t status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        printf("Failed to initialize PSA Crypto\n");
+        return;
+    }
+
+    /* Load the key into the psa key store. */
+    psa_key_id_t psa_key_id = PSA_KEY_ID_NULL;
+    psa_key_attributes_t keyAttr = PSA_KEY_ATTRIBUTES_INIT;
+    psa_set_key_usage_flags(&keyAttr, PSA_KEY_USAGE_DECRYPT);
+    psa_set_key_type(&keyAttr, PSA_KEY_TYPE_AES);
+    psa_set_key_bits(&keyAttr, 128);
+    psa_set_key_algorithm(&keyAttr, PSA_ALG_ECB_NO_PADDING);
+    status = psa_import_key(&keyAttr, key, 16, &psa_key_id);
+    if (status != PSA_SUCCESS) {
+        printf("\nERROR: Failed to import key.\n");
+        return;
+    }
+
+    /* Perform the cbc. */
+    memcpy(prevResult, iv, 16);
+    for (int i = 0; i < numBlocks; i ++) {
+        psa_cipher_decrypt(psa_key_id, PSA_ALG_ECB_NO_PADDING, bytes + (i * 16), 16, out + (16*i), 16, &unused);
+        if (status != PSA_SUCCESS) {
+            printf("\nERROR: Failed to decrypt, error code: %d.\n", status);
+            psa_destroy_key(psa_key_id);
+            return;
+        }
+        xor_bytes(out + (16 * i), prevResult, out + (16 * i), 16);
+        memcpy(prevResult, bytes + (16* i), 16);
+    }
+
+    psa_destroy_key(psa_key_id);
 }

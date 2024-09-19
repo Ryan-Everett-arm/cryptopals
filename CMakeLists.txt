@@ -17,6 +17,7 @@ set(
     library/helpers/arithmatic.c
     library/helpers/crypto.c
     library/helpers/challengeList.h
+    library/helpers/random.c
 )
 
 set(

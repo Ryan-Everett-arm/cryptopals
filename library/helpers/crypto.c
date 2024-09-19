@@ -119,6 +119,67 @@ int find_repeating_xor_key(uint8_t* ciphertext, uint8_t* out, size_t len, size_t
     }
     return keySize;
 }
+
+void encrypt_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* out) {
+    psa_key_id_t psa_key_id = PSA_KEY_ID_NULL;
+        /* Initialize PSA Crypto */
+    psa_status_t status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        printf("Failed to initialize PSA Crypto\n");
+        return;
+    }
+
+    psa_key_attributes_t keyAttr = PSA_KEY_ATTRIBUTES_INIT;
+    psa_set_key_usage_flags(&keyAttr, PSA_KEY_USAGE_ENCRYPT);
+    psa_set_key_type(&keyAttr, PSA_KEY_TYPE_AES);
+    psa_set_key_bits(&keyAttr, 128);
+    psa_set_key_algorithm(&keyAttr, PSA_ALG_ECB_NO_PADDING);
+    status = psa_import_key(&keyAttr, key, keyLen, &psa_key_id);
+    if (status != PSA_SUCCESS) {
+        printf("\nERROR: Failed to import key.\n");
+        return;
+    }
+
+    /* Decrypt the data. */
+    size_t outLen;
+    status = psa_cipher_encrypt(psa_key_id, PSA_ALG_ECB_NO_PADDING, bytes, bytesLen, out, bytesLen, &outLen);
+    psa_destroy_key(psa_key_id);
+    if (status != PSA_SUCCESS) {
+        printf("\nERROR: Failed to encrypt, error code: %d.\n", status);
+        return;
+    }
+}
+
+void decrypt_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* out) {
+    /* Initialize PSA Crypto */
+    psa_status_t status = psa_crypto_init();
+    if (status != PSA_SUCCESS) {
+        printf("Failed to initialize PSA Crypto\n");
+        return;
+    }
+
+    psa_key_id_t psa_key_id = PSA_KEY_ID_NULL;
+    psa_key_attributes_t keyAttr = PSA_KEY_ATTRIBUTES_INIT;
+    psa_set_key_usage_flags(&keyAttr, PSA_KEY_USAGE_DECRYPT);
+    psa_set_key_type(&keyAttr, PSA_KEY_TYPE_AES);
+    psa_set_key_bits(&keyAttr, 128);
+    psa_set_key_algorithm(&keyAttr, PSA_ALG_ECB_NO_PADDING);
+    status = psa_import_key(&keyAttr, key, keyLen, &psa_key_id);
+    if (status != PSA_SUCCESS) {
+        printf("\nERROR: Failed to import key.\n");
+        return;
+    }
+
+    /* Decrypt the data. */
+    size_t outLen;
+    status = psa_cipher_decrypt(psa_key_id, PSA_ALG_ECB_NO_PADDING, bytes, bytesLen, out, bytesLen, &outLen);
+    psa_destroy_key(psa_key_id);
+    if (status != PSA_SUCCESS) {
+        printf("\nERROR: Failed to decrypt, error code: %d.\n", status);
+        return;
+    }
+}
+
 /* In future this could be generalised to just encrypt_cbc, with mode as param. */
 void encrypt_cbc_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* iv, uint8_t* out) {
     int numBlocks = bytesLen / 16;

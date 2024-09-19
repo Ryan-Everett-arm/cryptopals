@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <formatters.h>
 
-static inline void print_hex_array(char* in, size_t len) {
+static inline void print_hex_array(uint8_t* in, size_t len) {
     for (size_t i = 0; i < len; i++) {
         printf("%02x", in[i]);
     }

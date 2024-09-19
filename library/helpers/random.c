@@ -21,7 +21,18 @@ void gen_rand_bytes(uint8_t* out, size_t num) {
 }
 
 /*
- * Generate a uniform (not yet proven!) random int s.t. low <= n <high.
+ * Generate a uniform random int s.t. low <= n <high.
+ * Sketch proof of uniformity:
+ * P(x returned) = Exists N s.t. P((rK rejected forall K<N) AND P((rN % range == x))
+ *                             = P((rN rejected forall n))   *  P((rN % range == x))
+ * (By independance, assuming uniformity of underlying randomness).
+ * Now, notice that P((rN % range == x)) = 1/range.
+ * Therefore, P(x returned at step N) = 1/range * P(rK rejected forall K<N).
+ * Which is independant of x.
+ * Therefore, forall i,j in range, P(i returned) == P(j returned). (1)
+ * P(no return) = lim k->inf: P(rejction at step n)^k = 0. (2)
+ * (1) ^ (2) => P(x (in range) returned) = 1/range.
+ * => Function is uniform.
  */
 unsigned int gen_rand_in_range(unsigned int low, unsigned int high) {
     unsigned int range = high - low;

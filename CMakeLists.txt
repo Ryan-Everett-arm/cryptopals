@@ -59,6 +59,7 @@ add_executable(challenge8 library/set1/challenge8.c ${Helpers})
 #Set 2:
 add_executable(challenge9 library/set2/challenge9.c ${Helpers})
 add_executable(challenge10 library/set2/challenge10.c ${Helpers})
+add_executable(challenge11 library/set2/challenge11.c ${Helpers})
 
 #Link external libraries
 target_link_libraries(challenge1 MbedTLS::mbedtls)
@@ -72,3 +73,4 @@ target_link_libraries(challenge7 MbedTLS::mbedtls)
 target_link_libraries(challenge8 MbedTLS::mbedtls)
 target_link_libraries(challenge9 MbedTLS::mbedtls)
 target_link_libraries(challenge10 MbedTLS::mbedtls)
+target_link_libraries(challenge11 MbedTLS::mbedtls)

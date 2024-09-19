@@ -181,7 +181,7 @@ void decrypt_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t k
 }
 
 /* In future this could be generalised to just encrypt_cbc, with mode as param. */
-void encrypt_cbc_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* iv, uint8_t* out) {
+void encrypt_cbc_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* iv, uint8_t* out) {
     int numBlocks = bytesLen / 16;
     uint8_t prevResult [16];
     size_t unused;
@@ -227,7 +227,7 @@ void encrypt_cbc_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size
 }
 
 /* In future this could be generalised to just decrypt_cbc, with mode as param. */
-void decrypt_cbc_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* iv, uint8_t* out) {
+void decrypt_cbc_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* iv, uint8_t* out) {
 
     int numBlocks = bytesLen / 16;
     uint8_t prevResult [16];

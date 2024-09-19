@@ -17,6 +17,6 @@ void encrypt_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t k
 void decrypt_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* out);
 
 /* In future this could be generalised to just encrypt_cbc, with mode as param. */
-void encrypt_cbc_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* iv, uint8_t* out);
+void encrypt_cbc_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* iv, uint8_t* out);
 
-void decrypt_cbc_ecb_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* iv, uint8_t* out);
+void decrypt_cbc_aes_128(uint8_t* bytes, size_t bytesLen, uint8_t* key, size_t keyLen, uint8_t* iv, uint8_t* out);

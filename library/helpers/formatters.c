@@ -200,7 +200,7 @@ char* decode_b64_file_into_bytes(FILE * filePointer, int maxLineLen, size_t* out
 
 /* Pad a string 'in' to a 'blockLen' size using the PKCS#7 format.
  * Put the result into 'out'. 'out' and 'in' can be the same. */
-void pad_pkcs7(char* in, char* out, size_t inLen, uint8_t blockLen) {
+void pad_pkcs7(char* in, char* out, size_t inLen, uint8_t blockLen, size_t* outLen) {
     if (out != in) {
         /* Copy in into out. */
         for (int i = 0; i < inLen; i ++) {
@@ -212,4 +212,5 @@ void pad_pkcs7(char* in, char* out, size_t inLen, uint8_t blockLen) {
     for (int i = inLen; i < inLen + padLen; i++) {
         out[i] = padLen;
     }
+    *outLen = inLen + padLen;
 }

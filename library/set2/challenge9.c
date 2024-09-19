@@ -7,10 +7,11 @@
 
 int main() {
     char in [] = "YELLOW SUBMARINE    ";
-    pad_pkcs7(in, in, 16, 20);
+    size_t outLen;
+    pad_pkcs7(in, in, 16, 20, &outLen);
     printf("\n");
     print_ascii_array(in, 16);
-    for (int i = 16; i < 20; i ++) {
+    for (int i = 16; i < outLen; i ++) {
         printf("\\x%d", in[i]);
     }
 }

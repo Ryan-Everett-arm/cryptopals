@@ -25,12 +25,12 @@ int main() {
     for (int i = 0; i < 16; i ++){
         iv[i] = 0;
     }
-    decrypt_cbc_ecb_aes_128(ctx, bytesLen, key, keyLen, iv, ptx);
+    decrypt_cbc_aes_128(ctx, bytesLen, key, keyLen, iv, ptx);
     uint8_t res[bytesLen];
     memcpy(res, ptx, bytesLen);
 
-    encrypt_cbc_ecb_aes_128(ptx, bytesLen, key, keyLen, iv, ctx);
-    decrypt_cbc_ecb_aes_128(ctx, bytesLen, key, keyLen, iv, ptx);
+    encrypt_cbc_aes_128(ptx, bytesLen, key, keyLen, iv, ctx);
+    decrypt_cbc_aes_128(ctx, bytesLen, key, keyLen, iv, ptx);
 
     for (int i = 0; i < bytesLen; i ++) {
         if (ptx[i] != res[i]) {
